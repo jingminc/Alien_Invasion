@@ -147,6 +147,10 @@ def check_bullet_alien_collisions(ai_settings, screen, stats, sb, ship, aliens, 
 
     # 记分
     if collisions:
+        # 发出撞击音效
+        pygame.mixer.init()
+        pygame.mixer.music.load('sound\8177.wav')
+        pygame.mixer.music.play()
         # 在字典collisions中：与外星人碰撞的子弹是键，而与每颗子弹相关的值是列表，包含撞到的外星人
         for aliens in collisions.values():
             stats.score += ai_settings.alien_points * len(aliens)
