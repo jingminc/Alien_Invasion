@@ -12,7 +12,7 @@ class Scoreboard():
         self.stats = stats
         
         # 字体及颜色
-        self.text_color = (30, 30, 30)
+        self.text_color = (255, 255, 255)
         self.font = pygame.font.SysFont(None, 48)
         
         # 准备当前得分图像和最高分图像

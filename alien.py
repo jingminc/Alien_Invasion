@@ -25,9 +25,9 @@ class Alien(Sprite):
     """位置标志：检查外星人群是否位于屏幕边缘"""
     def check_edges(self):
         screen_rect = self.screen.get_rect()
-        if self.rect.right >= screen_rect.right:
+        if self.rect.right >= screen_rect.right -10:
             return True 
-        elif self.rect.left <= 0:
+        elif self.rect.left <= 10:
             return True
     
     """更新状态：向左或向右移动"""
