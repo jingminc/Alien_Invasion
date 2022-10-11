@@ -3,7 +3,7 @@ from pygame.sprite import Sprite
 
 class Ship(Sprite):
     """初始化飞船"""
-    def __init__(self, ai_settings, screen):
+    def __init__(self, ai_settings, screen, size=(0, 0)):
         #调用super()继承精灵，以便创建飞船编组
         super(Ship, self).__init__()
 
@@ -12,7 +12,10 @@ class Ship(Sprite):
         self.ai_settings = ai_settings
 
         # 外观：加载飞船图像，获取外接矩形
-        self.image = pygame.image.load('image/ship.bmp') #返回飞船的surface
+        if size == (0, 0):
+            size = ai_settings.ship_size
+        self.image = pygame.image.load('image/ship.png') #返回飞船的surface
+        self.image = pygame.transform.scale(self.image, size)
         self.rect = self.image.get_rect() #获取surface的属性rect
         self.screen_rect = screen.get_rect()
         

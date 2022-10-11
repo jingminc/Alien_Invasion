@@ -7,11 +7,11 @@ class Button():
         self.screen_rect = screen.get_rect()
         
         # 基本属性:按钮尺寸
-        self.width, self.height = 200, 50
+        self.width, self.height = 200, 60
         # 其他属性：背景颜色、文本颜色、字体
-        self.button_color = (255, 0, 0)
-        self.text_color = (255, 255, 255)
-        self.font = pygame.font.SysFont(None, 48) # None是默认字体，48是字号
+        self.button_color = (50, 206, 24)
+        self.text_color = (0, 0, 0)
+        self.font = pygame.font.Font('font\joystix.monospace-regular.ttf', 42) # None是默认字体，48是字号
         
         # 外观：创建矩形
         self.rect = pygame.Rect(0, 0, self.width, self.height)

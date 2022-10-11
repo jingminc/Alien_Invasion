@@ -1,4 +1,3 @@
-import sys
 import pygame
 from settings import Settings
 from game_state import GameStats
@@ -30,6 +29,11 @@ def run_game():
     stats = GameStats(ai_settings)
     # 记分实例 
     sb = Scoreboard(ai_settings, screen, stats)
+
+    # 加载最高分
+    gf.load_score(stats)
+    sb.prep_high_score()
+    sb.show_score()
     
     """开始游戏的主循环"""
     while True:

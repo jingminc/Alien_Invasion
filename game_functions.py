@@ -11,6 +11,9 @@ def check_events(ai_settings, screen, stats,sb, play_button, ship, aliens,
         bullets, enemy_bullets):
     for event in pygame.event.get():# event是用户操作（鼠标/按键）
             if event.type == pygame.QUIT: #如果事件是游戏窗口的关闭按钮
+                filename = 'highscore.txt'
+                with open(filename, 'w') as file_object:
+                    file_object.write(str(stats.high_score))
                 sys.exit() # 退出游戏
             elif event.type == pygame.MOUSEBUTTONDOWN: #鼠标点击
                 mouse_x, mouse_y = pygame.mouse.get_pos() #获取单机时鼠标的x,y坐标
@@ -42,6 +45,9 @@ def check_keydown_events(event,ai_settings, screen, stats,sb, ship, aliens,
         fire_bullet(ai_settings, screen, ship, bullets) 
     # 6）'q'退出游戏
     elif event.key == pygame.K_q:
+        filename = 'highscore.txt'
+        with open(filename, 'w') as file_object:
+            file_object.write(str(stats.high_score))
         sys.exit()
     # 7）'p'或'Enter'键开始游戏
     elif event.key == pygame.K_p or event.key == pygame.K_RETURN:
@@ -100,6 +106,7 @@ def start_game(ai_settings, screen, stats, sb, ship, aliens,
     sb.prep_high_score()
     sb.prep_level()
     sb.prep_ships()
+    sb.show_score()
     # 清空外星人列表和子弹列表
     aliens.empty()
     bullets.empty()
@@ -160,6 +167,16 @@ def check_high_score(stats, sb):
         stats.high_score = stats.score
         sb.prep_high_score() 
 
+# 写入最高分
+def load_score(stats):
+	filename = 'highscore.txt'
+	try:
+		with open(filename) as file_object:
+			score = file_object.read()
+			stats.high_score = int(score)
+	except FileNotFoundError:
+		pass
+
 # 检查子弹是否击中外星人，如果是，就删除相应的子弹和外星人
 def check_bullet_alien_collisions(ai_settings, screen, stats, sb, ship, aliens, bullets):            
     collisions = pygame.sprite.groupcollide(bullets, aliens, True, True) #遍历bullets和aliens
@@ -219,14 +236,14 @@ def create_fleet(ai_settings, screen, ship, aliens):
 # 计算每行可容纳多少个外星人
 def get_number_aliens_x(ai_settings, alien_width):
     available_space_x = ai_settings.screen_width - 2 * alien_width
-    number_aliens_x = int(available_space_x / (2 * alien_width))
+    number_aliens_x = int(available_space_x / (ai_settings.alien_density_factor_x * alien_width))
     return number_aliens_x 
 
 # 计算可以容纳多少行外星人
 def get_number_rows(ai_settings, ship_height, alien_height):
     available_space_y = (ai_settings.screen_height - 
-                            (5 * alien_height) - ship_height)
-    number_rows = int(available_space_y / (2 * alien_height))
+                            (6 * alien_height) - ship_height)
+    number_rows = int(available_space_y / (ai_settings.alien_density_factor_y * alien_height))
     return number_rows
 
 # 创建一个外星人（不是外星人群的成员）+放在当前行    
@@ -234,12 +251,12 @@ def create_alien(ai_settings, screen, aliens, alien_number, row_number):
     alien = Alien(ai_settings, screen)
     # 计算外星人在当前行的位置
     alien_width = alien.rect.width # 外星人间距=外星人宽度（避免反复访问属性rect）
-    alien.x = alien_width + 2 * alien_width * alien_number # 横坐标
+    alien.x = alien_width + ai_settings.alien_density_factor_x * alien_width * alien_number # 横坐标
     alien.rect.x = alien.x 
         #这里很重要！
         # 如果写作：alien.rect.x = alien_width + 2 * alien_width * alien_number
         # 屏幕只会出现一列外星人
-    alien.rect.y = alien.rect.height + 2 * alien.rect.height * row_number # 纵坐标
+    alien.rect.y = alien.rect.height + ai_settings.alien_density_factor_y * alien.rect.height * row_number +40 # 纵坐标
     aliens.add(alien) # 外星人群
 
 # 1）碰到边缘
@@ -269,7 +286,6 @@ def ship_hit(ai_settings, screen, stats, sb, ship, aliens, bullets,enemy_bullets
     # 碰撞后数目-1
     if stats.ships_left > 0:
         stats.ships_left -= 1
-        print(stats.ships_left)
 
         enemies = []
         for alien in aliens:
@@ -287,6 +303,8 @@ def ship_hit(ai_settings, screen, stats, sb, ship, aliens, bullets,enemy_bullets
         # 暂停游戏
         sleep(0.5) 
     else:
+        stats.ships_left = -1
+        sb.prep_ships()
         stats.game_active = False
         pygame.mouse.set_visible(True) 
 
@@ -302,4 +320,3 @@ def update_aliens(ai_settings, screen, stats, sb, ship, aliens, bullets, enemy_b
         ship_hit(ai_settings, screen, stats, sb, ship, aliens, bullets, enemy_bullets)
 
     check_aliens_bottom(ai_settings, screen, stats, sb, ship, aliens, bullets,enemy_bullets) # c.触底
-

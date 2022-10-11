@@ -2,23 +2,30 @@ class Settings(): #存储游戏所有设置的类
     """初始化游戏的静态设置"""
     def __init__(self):
         # 屏幕设置
-        self.screen_width = 1200
+        self.screen_width = 1440
         self.screen_height = 800 # a.设置尺寸
         self.bg_color = (6, 2, 52) # b.设置背景色
+        # 外星人设置
+        self.ship_size = (120, 80)
+        self.alien_density_factor_x = 2.2
+        self.alien_density_factor_y = 2
+
         # 飞船设置
-        self.ship_limit = 3 #飞船数量=3
+        self.ship_size = (120, 80)
+        self.ship_limit = 2 #飞船数量
+        self.score_ship_size = (60, 40)
+        
         # 子弹设置
-        self.bullet_width = 3 #宽3像素
+        self.bullet_width = 4 #宽3像素
         self.bullet_height = 15 #高15像素
         # self.bullet_color = 60, 60, 60 深灰色
         self.bullet_allowed = 3
         
         # 外星人子弹设置
         self.enemy_bullet_color = 230, 8, 0
-        self.enemy_bullets_allowed = 5
         
         # 加快游戏的速度
-        self.speedup_scale = 1.1
+        self.speedup_scale = 1.3
         # 加倍分数
         self.score_scale = 1.5
 
@@ -42,30 +49,33 @@ class Settings(): #存储游戏所有设置的类
         
     def _easy_settings(self):
         # easy游戏难度的设置
-        self.ship_speed_factor = 0.6
-        self.bullet_color = (0, 0, 255)
-        self.bullet_speed_factor = 3
-        self.alien_speed_factor = 0.2
-        self.fleet_drop_speed = 8
+        self.ship_speed_factor = 0.8
+        self.bullet_color = (234, 234, 234)
+        self.bullet_speed_factor = 1.2
+        self.alien_speed_factor = 0.4
+        self.fleet_drop_speed = 10
         self.enemy_bullet_speed_factor = 0.3
+        self.enemy_bullets_allowed = 2
         
     def _normal_settings(self):
         # normal游戏难度的设置
         self.ship_speed_factor = 0.8
-        self.bullet_color = (234, 234, 234)
-        self.bullet_speed_factor = 3
-        self.alien_speed_factor = 0.35
-        self.fleet_drop_speed = 10
+        self.bullet_color = (151, 235, 255)
+        self.bullet_speed_factor = 1.2
+        self.alien_speed_factor = 0.4
+        self.fleet_drop_speed = 13
         self.enemy_bullet_speed_factor = 0.3
+        self.enemy_bullets_allowed = 4
         
     def _hard_settings(self):
         # hard游戏难度的设置
         self.ship_speed_factor = 1
         self.bullet_color = (151, 235, 255)
-        self.bullet_speed_factor = 3
-        self.alien_speed_factor = 0.5
-        self.fleet_drop_speed = 12
+        self.bullet_speed_factor = 1.5
+        self.alien_speed_factor = 0.6
+        self.fleet_drop_speed = 16
         self.enemy_bullet_speed_factor = 0.3
+        self.enemy_bullets_allowed = 4
 
     """提高速度和分数设置"""
     def increase_speed(self):
